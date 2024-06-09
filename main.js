@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import './style.css'
 
 
 // scene
@@ -14,12 +15,35 @@ const material = new THREE.MeshStandardMaterial({
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
 
+// sizes
+const sizes = {
+  width: window.innerWidth,
+  height: window.innerHeight
+}
+
+// set up light
+const light = new THREE.PointLight(0xffffff, 100, 100);
+light.position.set(0, 10, 10);
+scene.add(light)
+
 // Add a camera
-const camera = new THREE.PerspectiveCamera(45, 800, 600);
+const camera = new THREE.PerspectiveCamera(45, sizes.width/sizes.height);
+camera.position.z = 20
 scene.add(camera);
 
 // render the scene on the screen
 const canvas = document.querySelector('.webgl');
 const renderer = new THREE.WebGLRenderer({canvas});
-renderer.setSize(800, 600);
+renderer.setSize(sizes.width, sizes.height);
+renderer.render(scene, camera);
+
+
+// resize
+window.addEventListener('resize', () => {
+  // update sizes
+  style.width = window.innerWidth;
+  style.height = window.innerHeight;
+  // update camera
+  camera.aspect = sizes.width / sizes.height;
+})
 
